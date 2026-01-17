@@ -11,10 +11,17 @@ interface ProductCardProps {
   index?: number;
 }
 
-export const ProductCard: React.FC<ProductCardProps> = ({ product, index = 0 }) => {
+export const ProductCard: React.FC<ProductCardProps> = ({
+  product,
+  index = 0,
+}) => {
   const { addToCart } = useCart();
-  const hasDiscount = product.discountPrice && product.discountPrice < product.price;
+
+  const hasDiscount =
+    product.discountPrice && product.discountPrice < product.price;
+
   const displayPrice = product.discountPrice ?? product.price;
+
   const discountPercent = hasDiscount
     ? Math.round((1 - product.discountPrice! / product.price) * 100)
     : 0;
@@ -23,90 +30,83 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, index = 0 }) 
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.1, duration: 0.5 }}
-      className="group card-artisan"
+      transition={{ delay: index * 0.05 }}
+      className="group card-artisan bg-card rounded-2xl overflow-hidden border border-border"
     >
-      {/* Image */}
-      <Link to={`/product/${product.id}`} className="block relative aspect-square overflow-hidden">
+      {/* IMAGE */}
+      <Link
+        to={`/product/${product.id}`}
+        className="block relative aspect-square overflow-hidden"
+      >
         <img
           src={product.images[0] || "/placeholder.svg"}
           alt={product.name}
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
         />
-        
-        {/* Overlay on hover */}
-        <div className="absolute inset-0 bg-foreground/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-        
+
+        {/* Overlay */}
+        <div className="absolute inset-0 bg-foreground/5 opacity-0 group-hover:opacity-100 transition-opacity" />
+
         {/* Badges */}
-        <div className="absolute top-3 left-3 flex flex-col gap-2">
+        <div className="absolute top-2 left-2 flex flex-col gap-1">
           {hasDiscount && (
-            <Badge variant="destructive" className="font-semibold">
-              -{discountPercent}%
-            </Badge>
+            <Badge variant="destructive">-{discountPercent}%</Badge>
           )}
           {product.codAvailable && (
-            <Badge variant="secondary" className="bg-secondary text-secondary-foreground">
-              COD
-            </Badge>
+            <Badge variant="secondary">COD</Badge>
           )}
         </div>
 
-        {/* Quick actions */}
-        <div className="absolute top-3 right-3 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-          <Button
-            variant="secondary"
-            size="icon"
-            className="h-9 w-9 rounded-full shadow-md bg-card"
-          >
+        {/* Wishlist (desktop only) */}
+        <div className="hidden sm:block absolute top-2 right-2">
+          <Button size="icon" variant="secondary" className="rounded-full">
             <Heart className="h-4 w-4" />
           </Button>
         </div>
 
-        {/* Out of stock overlay */}
+        {/* Out of stock */}
         {product.stock === 0 && (
           <div className="absolute inset-0 bg-background/80 flex items-center justify-center">
-            <span className="font-display text-lg font-semibold text-muted-foreground">
+            <span className="font-semibold text-muted-foreground">
               Out of Stock
             </span>
           </div>
         )}
       </Link>
 
-      {/* Content */}
+      {/* CONTENT */}
       <div className="p-4">
         <Link to={`/product/${product.id}`}>
-          <h3 className="font-display text-lg font-semibold text-foreground group-hover:text-primary transition-colors line-clamp-1">
+          <h3 className="font-display text-base font-semibold line-clamp-1">
             {product.name}
           </h3>
         </Link>
-        
-        <p className="text-sm text-muted-foreground mt-1 line-clamp-2">
+
+        <p className="text-sm text-muted-foreground mt-1 line-clamp-1">
           {product.description}
         </p>
 
-        <div className="flex items-center justify-between mt-4">
-          <div className="flex items-baseline gap-2">
-            <span className="font-display text-xl font-bold text-primary">
-              ₹{displayPrice.toLocaleString()}
+        {/* PRICE */}
+        <div className="flex items-center gap-2 mt-3">
+          <span className="text-lg font-bold text-primary">
+            ₹{displayPrice}
+          </span>
+          {hasDiscount && (
+            <span className="text-sm text-muted-foreground line-through">
+              ₹{product.price}
             </span>
-            {hasDiscount && (
-              <span className="text-sm text-muted-foreground line-through">
-                ₹{product.price.toLocaleString()}
-              </span>
-            )}
-          </div>
-
-          <Button
-            variant="default"
-            size="sm"
-            onClick={() => addToCart(product)}
-            disabled={product.stock === 0}
-            className="gap-1.5"
-          >
-            <ShoppingBag className="h-4 w-4" />
-            Add
-          </Button>
+          )}
         </div>
+
+        {/* ADD BUTTON – FIXED FOR MOBILE */}
+        <Button
+          onClick={() => addToCart(product)}
+          disabled={product.stock === 0}
+          className="w-full mt-3 rounded-xl btn-primary"
+        >
+          <ShoppingBag className="h-4 w-4 mr-2" />
+          Add to Cart
+        </Button>
       </div>
     </motion.div>
   );
