@@ -1,0 +1,156 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Lato:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+  LavMe – Fiber Art Design System
+  Soft pastel, handmade aesthetic with elegant typography
+  All colors in HSL format
+*/
+
+@layer base {
+  :root {
+    --background: 35 30% 97%;
+    --foreground: 30 25% 18%;
+
+    --card: 40 25% 99%;
+    --card-foreground: 30 25% 18%;
+
+    --popover: 40 25% 99%;
+    --popover-foreground: 30 25% 18%;
+
+    --primary: 15 55% 70%;
+    --primary-foreground: 15 45% 98%;
+
+    --secondary: 145 30% 68%;
+    --secondary-foreground: 145 35% 18%;
+
+    --muted: 38 25% 92%;
+    --muted-foreground: 30 15% 45%;
+
+    --accent: 40 45% 90%;
+    --accent-foreground: 35 40% 25%;
+
+    --tertiary: 355 40% 78%;
+    --tertiary-foreground: 355 35% 22%;
+
+    --border: 35 20% 85%;
+    --input: 38 25% 92%;
+    --ring: 15 55% 70%;
+
+    --radius: 1rem;
+
+    --shadow-soft: 0 4px 24px -6px hsl(30 25% 18% / 0.08);
+    --shadow-card: 0 8px 40px -12px hsl(30 25% 18% / 0.1);
+    --shadow-elevated: 0 20px 60px -15px hsl(30 25% 18% / 0.15);
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground font-body antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display font-semibold tracking-tight;
+  }
+}
+
+@layer components {
+  .container-narrow {
+    @apply max-w-5xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  .container-wide {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary via-tertiary to-secondary;
+  }
+
+  .card-artisan {
+    @apply bg-card rounded-3xl shadow-card border border-border/40
+    transition-all duration-500 hover:shadow-elevated hover:-translate-y-1;
+  }
+
+  .btn-primary {
+    @apply bg-primary text-primary-foreground px-7 py-3.5 rounded-full
+    font-medium shadow-soft transition-all duration-300
+    hover:bg-primary/90 hover:-translate-y-0.5;
+  }
+
+  .btn-secondary {
+    @apply bg-secondary/20 text-secondary-foreground px-7 py-3.5 rounded-full
+    font-medium border border-secondary/30 transition-all duration-300
+    hover:bg-secondary/30;
+  }
+
+  .badge-handmade {
+    @apply inline-flex items-center gap-2 px-4 py-1.5
+    bg-accent/80 text-accent-foreground text-xs font-medium
+    rounded-full border border-accent-foreground/10;
+  }
+
+  .section-padding {
+    @apply py-20 md:py-28;
+  }
+
+  /* ✅ FIXED: footer link defined ONCE */
+  .footer-link {
+    @apply text-muted-foreground hover:text-primary transition-colors text-sm;
+  }
+
+  .cozy-pattern {
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23d4a574' fill-opacity='0.06'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4z'/%3E%3C/g%3E%3C/svg%3E");
+  }
+}
+
+@layer utilities {
+  .animate-fade-in {
+    animation: fadeIn 0.6s ease-out forwards;
+  }
+
+  .animate-slide-up {
+    animation: slideUp 0.6s ease-out forwards;
+  }
+
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+}
+
+/* ✅ CLEAN MOBILE TYPOGRAPHY ONLY */
+@media (max-width: 640px) {
+  h1 { font-size: 2.1rem; }
+  h2 { font-size: 1.6rem; }
+  p  { font-size: 0.95rem; }
+
+  .section-padding {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+  }
+}
